@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SwiftUIView.swift
 //  slotmachine
 //
 //  Created by Calin Rafa on 17.03.2023.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Hexagon: Shape {
+struct Hexagonal: Shape {
     func path(in rect: CGRect) -> Path {
         return Path { path in
             let p1 = CGPoint(x: 0, y: 20)
@@ -29,34 +29,9 @@ struct Hexagon: Shape {
     }
 }
 
-enum Choice: Int, Identifiable {
-    var id: Int {
-        rawValue
-    }
-    
-    case success, failure
-}
-
-
-struct ContentView: View {
-    @State public var symbols = ["eating", "happy", "love"]
-    @State public var numbers = [0, 1, 2]
-    @State public var counter = 0
-    @State private var showingAler: Choice?
-    
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
-        }
-        .padding()
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
+struct SwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        Hexagonal()
+            .frame(width: 100, height: 120, alignment: .center)
     }
 }
