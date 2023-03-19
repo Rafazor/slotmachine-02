@@ -42,16 +42,146 @@ struct ContentView: View {
     @State public var symbols = ["eating", "happy", "love"]
     @State public var numbers = [0, 1, 2]
     @State public var counter = 0
-    @State private var showingAler: Choice?
+    @State public var attempts = 6
+    @State private var showingAlert: Choice?
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        ZStack {
+            Image("sunshine")
+                .resizable()
+                .ignoresSafeArea(.all)
+            VStack(alignment: .center, spacing: 80) {
+                VStack {
+                    HStack {
+                        Image("fire")
+                            .resizable()
+                            .scaledToFit()
+                            .shadow(color: .orange, radius: 1, y: 3)
+                        Text("Slot Machine")
+                            .font(.system(size: 30))
+                            .fontWeight(.black)
+                            .shadow(color: .orange, radius: 1, y: 3)
+                        Image("fire")
+                            .resizable()
+                            .scaledToFit()
+                            .shadow(color: .orange, radius: 1, y: 3)
+                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                    }
+                    .frame(width: .infinity, height: 50, alignment: .center)
+                    
+                    Text("Remaining attempts: \(self.attempts)")
+                        .font(.title3)
+                        .fontWeight(.black)
+                        .foregroundColor(.black)
+                        .shadow(radius: 5, x: 2, y: 4)
+                }
+                
+                VStack(spacing: 15) {
+                    HStack(spacing: 35) {
+                        Hexagon()
+                            .fill(Color.white.opacity(0.8))
+                            .frame(width: 100, height: 120, alignment: .center)
+                            .overlay(
+                                Image(symbols[numbers[0]])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 70, alignment: .center)
+                                    .shadow(color: .gray, radius: 4, y: 5)
+                                    
+                            )
+                        Hexagon()
+                            .fill(Color.white.opacity(0.8))
+                            .frame(width: 100, height: 120, alignment: .center)
+                            .overlay(
+                                Image(symbols[numbers[1]])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 70, alignment: .center)
+                                    .shadow(color: .gray, radius: 4, y: 5)
+                                    
+                            )
+                    }
+                    Hexagon()
+                        .fill(Color.white.opacity(0.8))
+                        .frame(width: 100, height: 120, alignment: .center)
+                        .overlay(
+                            Image(symbols[numbers[2]])
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 80, height: 70, alignment: .center)
+                                .shadow(color: .gray, radius: 4, y: 5)
+                                
+                        )
+                    HStack(spacing: 35) {
+                        Hexagon()
+                            .fill(Color.white.opacity(0.8))
+                            .frame(width: 100, height: 120, alignment: .center)
+                            .overlay(
+                                Image(symbols[numbers[0]])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 70, alignment: .center)
+                                    .shadow(color: .gray, radius: 4, y: 5)
+                                    
+                            )
+                        Hexagon()
+                            .fill(Color.white.opacity(0.8))
+                            .frame(width: 100, height: 120, alignment: .center)
+                            .overlay(
+                                Image(symbols[numbers[1]])
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 70, alignment: .center)
+                                    .shadow(color: .gray, radius: 4, y: 5)
+                                    
+                            )
+                    }
+                }
+                
+                Button {
+                    self.numbers[0] = Int.random(in: 0...self.symbols.count - 1)
+                    self.numbers[1] = Int.random(in: 0...self.symbols.count - 1)
+                    self.numbers[2] = Int.random(in: 0...self.symbols.count - 1)
+                    
+                    counter += 1
+                    attempts -= 1
+                    
+                    if self.numbers[0] == self.numbers[1] && self.numbers[1] == self.numbers[2] {
+                        self.showingAlert = .success
+                        counter = 0
+                        attempts = 6
+                    }
+                    
+                    if counter > 5 {
+                        self.showingAlert = .failure
+                        counter = 0
+                        attempts = 6
+                    }
+                    
+                } label: {
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color("Color"))
+                        .overlay(
+                            Text("Spin")
+                                .fontWeight(.black)
+                                .font(.title3)
+                                .foregroundColor(.black)
+                        )
+                        .frame(width: 200, height: 40, alignment: .center)
+                        .shadow(color: .gray, radius: 1, y: 4)
+                }
+
+            }
+            .alert(item: $showingAlert) { alert -> Alert in
+                switch alert {
+                case .success:
+                    return Alert(title: Text("Yey, you won!"), message: Text("GG"), dismissButton: .cancel())
+                case .failure:
+                    return Alert(title: Text("Ooops!"), message: Text("Next time!"), dismissButton: .cancel())
+                }
+            }
+    
         }
-        .padding()
     }
 }
 
